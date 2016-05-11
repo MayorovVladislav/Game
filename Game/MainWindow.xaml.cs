@@ -30,32 +30,45 @@ namespace Game
         private void button_Click(object sender, RoutedEventArgs e)
         {
             if (textBox.Text != "")
-                gamenumber.Check(int.Parse(textBox.Text));
+            {
+                if (gamenumber.Check(int.Parse(textBox.Text)) && gamenumber.Counter > 0)
+                {
+                    if (gamenumber.Win(int.Parse(textBox.Text)))
+                    {
+                        MessageBoxResult d = MessageBox.Show($"Вы отгадали число. Хотите продолжить игру?\nДля продолжения нажмите \"ДА\". Для выхода из игры \"Нет\"", "Игра окончена", MessageBoxButton.YesNo);
+                        if (d == MessageBoxResult.Yes)
+                        {
+                            MenuItem_Click(null, null);
+                            textBox.Text = "";
+                        }
+                        else Close();
+                    }
+                    else
+                    {
+                        if (gamenumber.MoreLess(int.Parse(textBox.Text)))
+                            MessageBox.Show($"Загаднное число меньше. Осталось попыток: {gamenumber.Counter}");
+                        else
+                            MessageBox.Show($"Загаднное число больше. Осталось попыток: {gamenumber.Counter}");
+                    }
+                }
+                else
+                {
+                    MessageBoxResult d = MessageBox.Show($"Вы исчерпали число попыток.\nЗагаданное число: {gamenumber.Random}\nХотите продолжить игру?\nДля продолжения нажмите \"ДА\". Для выхода из игры \"Нет\"", "Игра окончена", MessageBoxButton.YesNo);
+                    if (d == MessageBoxResult.Yes)
+                    {
+                        MenuItem_Click(null, null);
+                        textBox.Text = "";
+                    }
+                    else Close();
+                }
+            }
             else
-                MessageBox.Show("Введите число!", "Ошибка.", MessageBoxButton.OK);
+                MessageBox.Show("Введите число!", "Ошибка.", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             gamenumber = new WhatNumberLibrary.WhatNumber();
-            gamenumber.message += Gamenumber_message;
-            gamenumber.gameover += Gamenumber_gameover;
-        }
-
-        private void Gamenumber_gameover(object sender, WhatNumberLibrary.WhatNumber.EventMessage e)
-        {
-            MessageBoxResult d = MessageBox.Show(e.Message, "Игра окончена", MessageBoxButton.YesNo);
-            if (d == MessageBoxResult.Yes)
-            {
-                MenuItem_Click(null, null);
-                textBox.Text = "";
-            }
-            else Close();
-        }
-
-        private void Gamenumber_message(object sender, WhatNumberLibrary.WhatNumber.EventMessage e)
-        {
-            MessageBox.Show(e.Message);
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)

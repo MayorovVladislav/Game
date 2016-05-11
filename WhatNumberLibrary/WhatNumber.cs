@@ -11,26 +11,6 @@ namespace WhatNumberLibrary
     /// </summary>
     public class WhatNumber
     {
-        /// <summary>
-        /// Класс для вывода сообщений.
-        /// </summary>
-        public class EventMessage : EventArgs
-        {
-            /// <summary>
-            /// Сообщение для вывода.
-            /// </summary>
-            public string Message { get; private set; }
-
-            /// <summary>
-            /// Конструктор для сохранения сообщения.
-            /// </summary>
-            /// <param name="message"></param>
-            public EventMessage(string message)
-            {
-                Message = message;
-            }
-        }
-
         int counter = 3;
         int random;
         /// <summary>
@@ -41,70 +21,57 @@ namespace WhatNumberLibrary
             random = new Random().Next(0, 101);
         }
         /// <summary>
-        /// Проверка введенного значения.
+        /// Возвращает загаданное число.
         /// </summary>
-        /// <param name="number">Пользовательское число.</param>
-        public void Check(int number)
+        public int Random
         {
-            EventMessage eventmessage = new EventMessage("");
-
-            if (number <= 100 || number >= 0)
+            get
             {
-                counter--;
-                if (counter != 0)
-                {
-                    if (number > random)
-                        eventmessage = new EventMessage($"Ваше число больше загаданного!\nОсталось попыток: {counter }");
-                    else if (number < random)
-                        eventmessage = new EventMessage($"Ваше число меньше загаданного!\nОсталось попыток: {counter }");
-                    else
-                    {
-                        eventmessage = new EventMessage("Вы угадали число!\nХотите начать новую игру?");
-                        GemeOverOutPut(eventmessage);
-                        return;
-                    }
-                }
-                else
-                {
-                    if (number == random)
-                        eventmessage = new EventMessage("Вы угадали число!\nХотите начать новую игру?");
-                    else
-                        eventmessage = new EventMessage("Вы не угадали число!\nХотите начать новую игру?");
-                    GemeOverOutPut(eventmessage);
-                    return;
-                }
+                return random;
             }
+        }
+        /// <summary>
+        /// Возвращает количество попыток.
+        /// </summary>
+        public int Counter
+        {
+            get
+            {
+                return counter;
+            }
+        }
+        /// <summary>
+        /// Проверка правильности ввода значени: если верно - проходит попытка ввода.
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public bool Check(int number)
+        {
+            if (number > 100 || number < 0)
+                return false;
             else
-                eventmessage = new EventMessage("Пожалуйства введите число в пределах 0 - 100.");
-            OutPut(eventmessage);
-        }
-
-        /// <summary>
-        /// Происходит при поиске случайного числа.
-        /// </summary>
-        public event EventHandler<EventMessage> message;
-        /// <summary>
-        /// Происходит при последней попытке и выводит сообщение об окончании игры.
-        /// </summary>
-        public event EventHandler<EventMessage> gameover;
-
-        /// <summary>
-        /// Вызов события.
-        /// </summary>
-        /// <param name="eventmessage"></param>
-        private void OutPut(EventMessage eventmessage)
-        {
-            if (message != null)
-                message(this, eventmessage);
+            {
+                --counter;
+                return true;
+            }
         }
         /// <summary>
-        /// Вызов события.
+        /// Проверка на равенство загаданного значения и вводимого значения.
         /// </summary>
-        /// <param name="eventmessage"></param>
-        private void GemeOverOutPut(EventMessage eventmessage)
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public bool Win(int number)
         {
-            if (gameover != null)
-                gameover(this, eventmessage);
+            return number == random;
+        }
+        /// <summary>
+        /// Проверка на больше/меньше загаданного значения и вводимого значения.
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public bool MoreLess(int number)
+        {
+            return number > random;
         }
     }
 }
