@@ -47,14 +47,15 @@ namespace WhatNumberLibrary
         /// <returns></returns>
         public bool Check(int number)
         {
-            if (number > 100 || number < 0)
-                return false;
-            else
+            bool result = false;
+            if (number < 100 && number > 0)
             {
-                --counter;
-                return true;
+                counter--;
+                result = true;
             }
+            return result;
         }
+    
         /// <summary>
         /// Проверка на равенство загаданного значения и вводимого значения.
         /// </summary>
