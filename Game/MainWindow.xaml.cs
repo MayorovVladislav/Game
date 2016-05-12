@@ -24,7 +24,7 @@ namespace Game
         public MainWindow()
         {
             InitializeComponent();
-            MenuItem_Click(null, null);
+            gamenumber = new WhatNumberLibrary.WhatNumber();
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
